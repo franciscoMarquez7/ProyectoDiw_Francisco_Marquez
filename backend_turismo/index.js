@@ -35,6 +35,7 @@ app.use("/api/monumentos", monumentoRoutes);
 // Configurar el middleware para servir archivos estáticos desde el directorio 'public\old_js_vainilla'
 app.use(express.static(path.join(__dirname, "public")));
 
+
 //Ruta para manejar las solicitudes al archivo index.html
 // app.get('/', (req, res) => {
 app.get("*", (req, res) => {

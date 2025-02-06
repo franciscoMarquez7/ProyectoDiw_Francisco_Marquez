@@ -125,6 +125,29 @@ class MonumentoController {
         );
     }
   }
+  async getMonumentosByNombre (req, res) {
+    let { nombre } = req.query;
+  
+    if (!nombre) {
+      return res.status(400).json(Respuesta.error(null, "Falta el parámetro nombre"));
+    }
+  
+    try {
+      const monumentos = await Monumento.findAll({
+        where: { nombre }
+      });
+  
+      if (monumentos.length === 0) {
+        return res.status(404).json(Respuesta.error(null, "No se encontraron monumentos con ese nombre"));
+      }
+  
+      return res.status(200).json(Respuesta.exito(monumentos, "Monumentos encontrados"));
+    } catch (error) {
+      logMensaje("Error al filtrar monumentos por nombre: " + error);
+      return res.status(500).json(Respuesta.error(null, "Error interno del servidor"));
+    }
+  };
+  
 }
 
 module.exports = new MonumentoController();

@@ -124,6 +124,24 @@ class CiudadController {
         );
     }
   }
+  async getCiudadesByPais(req, res) {
+    const { pais } = req.query; // Obtener el país desde la URL
+  
+    try {
+      const ciudades = await Ciudad.findAll({
+        where: { pais }
+      });
+  
+      if (ciudades.length === 0) {
+        return res.status(404).json(Respuesta.error(null, "No se encontraron ciudades en ese país"));
+      }
+  
+      return res.status(200).json(Respuesta.exito(ciudades, "Ciudades encontradas"));
+    } catch (error) {
+      logMensaje("Error al filtrar ciudades: " + error);
+      return res.status(500).json(Respuesta.error(null, "Error interno del servidor"));
+    }
+  };  
 }
 
 module.exports = new CiudadController();

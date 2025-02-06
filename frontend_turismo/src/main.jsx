@@ -1,5 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { ThemeProviderComponent } from "./context/ThemeContext.jsx";
 
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
@@ -17,6 +18,9 @@ import AltaCiudad from "./components/AltaCiudad";
 import PaginaError from "./pages/PaginaError";
 import AltaMonumento from "./components/AltaMonumento";
 import ModificarMonumento from "./components/ModificarMonumento";
+import ListadoCiudadesFiltrado from "./components/ListadoCiudadesFiltrado";
+import ListadoMonumentosFiltrado from "./components/ListadoMonumentosFiltrado";
+
 
 let router = createBrowserRouter([
   {
@@ -24,6 +28,14 @@ let router = createBrowserRouter([
     element: <Home />,
     errorElement: <PaginaError />,
     children: [
+      {
+        path: "listadociudadesfiltrado",
+        element: <ListadoCiudadesFiltrado />,
+      },
+      {
+        path: "listadomonumentosfiltrado",
+        element: <ListadoMonumentosFiltrado />,
+      },
       {
         path: "listadociudades",
         element: <ListadoCiudades />,
@@ -53,7 +65,7 @@ let router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
+  <ThemeProviderComponent>
     <RouterProvider router={router} />
-  </StrictMode>
+  </ThemeProviderComponent>
 );

@@ -2,7 +2,6 @@ import { Typography, TextField, Stack, Button } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { useState } from "react";
 import { useNavigate } from "react-router";
-// Importamos las variables de entorno
 import { apiUrl } from "../config";
 
 function AltaCiudad() {
@@ -11,11 +10,38 @@ function AltaCiudad() {
     pais: "",
     poblacion: "",
   });
+
+  const [errores, setErrores] = useState({
+    nombre: "",
+    pais: "",
+    poblacion: "",
+  });
+
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    // No hacemos submit
     e.preventDefault();
+
+    // ✅ Validaciones antes de enviar
+    let erroresTemp = { nombre: "", pais: "", poblacion: "" };
+    let hayErrores = false;
+
+    if (!datos.nombre.trim()) {
+      erroresTemp.nombre = "El nombre es obligatorio.";
+      hayErrores = true;
+    }
+    if (!datos.pais.trim()) {
+      erroresTemp.pais = "El país es obligatorio.";
+      hayErrores = true;
+    }
+    if (!datos.poblacion.trim() || isNaN(datos.poblacion) || Number(datos.poblacion) <= 0) {
+      erroresTemp.poblacion = "La población debe ser un número positivo.";
+      hayErrores = true;
+    }
+
+    setErrores(erroresTemp);
+
+    if (hayErrores) return; // Si hay errores, no enviamos los datos
 
     // Enviamos los datos mediante fetch
     try {
@@ -45,6 +71,12 @@ function AltaCiudad() {
       ...datos,
       [e.target.name]: e.target.value,
     });
+
+    // Limpiar error si el usuario comienza a escribir
+    setErrores({
+      ...errores,
+      [e.target.name]: "",
+    });
   };
 
   return (
@@ -65,28 +97,31 @@ function AltaCiudad() {
             sx={{ mx: 2 }}
           >
             <TextField
-              id="outlined-basic"
               label="Nombre"
               variant="outlined"
               name="nombre"
               value={datos.nombre}
               onChange={handleChange}
+              error={!!errores.nombre}
+              helperText={errores.nombre}
             />
             <TextField
-              id="outlined-basic"
-              label="Pais"
+              label="País"
               variant="outlined"
               name="pais"
               value={datos.pais}
               onChange={handleChange}
+              error={!!errores.pais}
+              helperText={errores.pais}
             />
             <TextField
-              id="outlined-basic"
-              label="Poblacion"
+              label="Población"
               variant="outlined"
               name="poblacion"
               value={datos.poblacion}
               onChange={handleChange}
+              error={!!errores.poblacion}
+              helperText={errores.poblacion}
             />
             <Button variant="contained" type="submit">
               Guardar

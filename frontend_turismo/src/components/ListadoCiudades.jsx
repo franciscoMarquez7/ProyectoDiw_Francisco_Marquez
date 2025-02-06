@@ -5,7 +5,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Typography } from "@mui/material";
+import { Typography, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Box } from "@mui/material";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
@@ -16,6 +16,7 @@ import { apiUrl } from "../config";
 
 function ListadoCiudades() {
   const [rows, setRows] = useState([]);
+  const [searchId, setSearchId] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,7 +26,6 @@ function ListadoCiudades() {
         headers: {
           "Content-Type": "application/json",
         },
-        //credentials: "include", // Para aceptar cookies en la respuesta y enviarlas si las hay
       });
 
       if (response.ok) {
@@ -35,7 +35,7 @@ function ListadoCiudades() {
     }
 
     getCiudad();
-  }, []); // Se ejecuta solo en el primer renderizado
+  }, []);
 
   const handleDelete = async (id) => {
     let response = await fetch(apiUrl + "/ciudades/" + id, {
@@ -43,12 +43,29 @@ function ListadoCiudades() {
     });
 
     if (response.ok) {
-      // Utilizando filter creo un array sin el plato borrado
-      const ciudadesTrasBorrado = rows.filter(
-        (ciudad) => ciudad.id != id
-      );
-      // Establece los datos de nuevo para provocar un renderizado
+      const ciudadesTrasBorrado = rows.filter((ciudad) => ciudad.id !== id);
       setRows(ciudadesTrasBorrado);
+    }
+  };
+
+  const handleSearchById = async () => {
+    if (!searchId) {
+      alert("Por favor, ingresa un ID válido.");
+      return;
+    }
+
+    let response = await fetch(apiUrl + "/ciudades/" + searchId, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.ok) {
+      let data = await response.json();
+      setRows([data.datos]); // Muestra solo la ciudad encontrada
+    } else {
+      alert("Ciudad no encontrada.");
     }
   };
 
@@ -57,6 +74,21 @@ function ListadoCiudades() {
       <Typography variant="h4" align="center" sx={{ mt: 2 }}>
         Listado de ciudades
       </Typography>
+
+      {/* Buscador de Ciudad por ID */}
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+        <TextField
+          label="Buscar por ID"
+          variant="outlined"
+          size="small"
+          value={searchId}
+          onChange={(e) => setSearchId(e.target.value)}
+          sx={{ mr: 2 }}
+        />
+        <Button variant="contained" onClick={handleSearchById}>
+          Buscar
+        </Button>
+      </Box>
 
       <Box sx={{ mx: 4 }}>
         <TableContainer component={Paper} sx={{ mt: 2 }}>
@@ -82,7 +114,7 @@ function ListadoCiudades() {
                   <TableCell align="right">{row.pais}</TableCell>
                   <TableCell align="right">{row.poblacion}</TableCell>
                   <TableCell align="center">
-                    <Button 
+                    <Button
                       variant="contained"
                       onClick={() => handleDelete(row.id)}
                       color="error"
@@ -93,9 +125,7 @@ function ListadoCiudades() {
                   <TableCell align="center">
                     <Button
                       variant="contained"
-                      onClick={() =>
-                        navigate("/modificarciudad/" + row.id)
-                      }
+                      onClick={() => navigate("/modificarciudad/" + row.id)}
                     >
                       <EditNoteIcon fontSize="small" />
                     </Button>
