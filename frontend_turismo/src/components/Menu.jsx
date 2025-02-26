@@ -24,12 +24,23 @@ function Menu() {
   const { modoOscuro, toggleTheme } = useContext(ThemeContext); // Accede al contexto del tema
 
   return (
-    <MDBNavbar expand="lg" light={!modoOscuro} dark={modoOscuro} bgColor={modoOscuro ? "dark" : "primary"}>
+    <MDBNavbar
+      expand="lg"
+      light={!modoOscuro}
+      dark={modoOscuro}
+      bgColor={modoOscuro ? "dark" : "primary"}
+    >
       <MDBContainer fluid>
         {/* Logo */}
         <MDBNavbarBrand>
           <img src={logo} height="30" alt="logo" loading="lazy" />
-          <Link to="/" style={{ color: modoOscuro ? "white" : "black", textDecoration: "none" }}>
+          <Link
+            to="/"
+            style={{
+              color: modoOscuro ? "white" : "black",
+              textDecoration: "none",
+            }}
+          >
             <h2>InfoTurismo</h2>
           </Link>
         </MDBNavbarBrand>
@@ -44,7 +55,10 @@ function Menu() {
         </MDBNavbarToggler>
 
         <MDBCollapse navbar open={openBasic}>
-          <MDBNavbarNav className="mr-auto mb-2 mb-lg-0" style={{ justifyContent: "flex-end" }}>
+          <MDBNavbarNav
+            className="mr-auto mb-2 mb-lg-0"
+            style={{ justifyContent: "flex-end" }}
+          >
             {/* Menú de Ciudades */}
             <MDBNavbarItem>
               <MDBDropdown>
@@ -58,8 +72,13 @@ function Menu() {
                   <Link to="/listadociudades" style={{ color: "#4f4f4f" }}>
                     <MDBDropdownItem link>Listado de Ciudades</MDBDropdownItem>
                   </Link>
-                  <Link to="/listadociudadesfiltrado" style={{ color: "#4f4f4f" }}>
-                    <MDBDropdownItem link>Listado de Ciudades Filtrado</MDBDropdownItem>
+                  <Link
+                    to="/listadociudadesfiltrado"
+                    style={{ color: "#4f4f4f" }}
+                  >
+                    <MDBDropdownItem link>
+                      Listado de Ciudades Filtrado
+                    </MDBDropdownItem>
                   </Link>
                 </MDBDropdownMenu>
               </MDBDropdown>
@@ -76,10 +95,17 @@ function Menu() {
                     <MDBDropdownItem link>Alta de Monumento</MDBDropdownItem>
                   </Link>
                   <Link to="/listadomonumentos" style={{ color: "#4f4f4f" }}>
-                    <MDBDropdownItem link>Listado de Monumentos</MDBDropdownItem>
+                    <MDBDropdownItem link>
+                      Listado de Monumentos
+                    </MDBDropdownItem>
                   </Link>
-                  <Link to="/listadomonumentosfiltrado" style={{ color: "#4f4f4f" }}>
-                    <MDBDropdownItem link>Listado de Monumentos Filtrado</MDBDropdownItem>
+                  <Link
+                    to="/listadomonumentosfiltrado"
+                    style={{ color: "#4f4f4f" }}
+                  >
+                    <MDBDropdownItem link>
+                      Listado de Monumentos Filtrado
+                    </MDBDropdownItem>
                   </Link>
                 </MDBDropdownMenu>
               </MDBDropdown>

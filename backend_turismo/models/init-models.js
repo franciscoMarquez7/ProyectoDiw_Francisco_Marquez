@@ -1,19 +1,17 @@
-var DataTypes = require("sequelize").DataTypes;
-var _ciudades = require("./ciudades");
-var _monumentos = require("./monumentos");
+const { DataTypes } = require("sequelize");
+const _ciudades = require("./ciudades");
+const _monumentos = require("./monumentos");
 
 function initModels(sequelize) {
-  var ciudades = _ciudades(sequelize, DataTypes);
-  var monumentos = _monumentos(sequelize, DataTypes);
+  const ciudades = _ciudades(sequelize, DataTypes);
+  const monumentos = _monumentos(sequelize, DataTypes);
 
-  monumentos.belongsTo(ciudades, { as: "ciudad", foreignKey: "ciudad_id"});
-  ciudades.hasMany(monumentos, { as: "monumentos", foreignKey: "ciudad_id"});
-
+  // Definir relaciones aquí si existen
+  
   return {
     ciudades,
     monumentos,
   };
 }
-module.exports = initModels;
-module.exports.initModels = initModels;
-module.exports.default = initModels;
+
+module.exports = { initModels };

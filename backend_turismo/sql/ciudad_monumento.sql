@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `ciudades` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL,
   `nombre` varchar(100) NOT NULL,
   `pais` varchar(100) NOT NULL,
   `poblacion` int NOT NULL
@@ -57,7 +57,7 @@ INSERT INTO `ciudades` (`id`, `nombre`, `pais`, `poblacion`) VALUES
 --
 
 CREATE TABLE `monumentos` (
-  `id` INT NOT NULL AUTO_INCREMENT,
+  `id` INT NOT NULL,
   `nombre` VARCHAR(100) NOT NULL,
   `ciudad_id` INT NOT NULL,
   `añoConstruccion` INT DEFAULT NULL,

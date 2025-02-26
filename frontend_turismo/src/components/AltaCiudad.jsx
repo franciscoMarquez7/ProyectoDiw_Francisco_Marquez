@@ -1,16 +1,30 @@
+/**
+ * @module AltaCiudad
+ * @description Componente que maneja el formulario de alta de una nueva ciudad
+ * @requires react
+ * @requires @mui/material
+ * @requires react-router-dom
+ */
 import { Typography, TextField, Stack, Button } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { apiUrl } from "../config";
 
+/**
+ * @function AltaCiudad
+ * @description Renderiza un formulario para crear una nueva ciudad
+ * @returns {JSX.Element} Formulario de alta de ciudad
+ */
 function AltaCiudad() {
+  // Estado para los datos del formulario
   const [datos, setDatos] = useState({
     nombre: "",
     pais: "",
     poblacion: "",
   });
 
+  // Estado para manejar los mensajes de error de validación
   const [errores, setErrores] = useState({
     nombre: "",
     pais: "",
@@ -19,6 +33,12 @@ function AltaCiudad() {
 
   const navigate = useNavigate();
 
+  /**
+   * @function handleSubmit
+   * @description Maneja el envío del formulario, valida los datos y hace la petición POST
+   * @param {Event} e - Evento del formulario
+   * @async
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -34,7 +54,11 @@ function AltaCiudad() {
       erroresTemp.pais = "El país es obligatorio.";
       hayErrores = true;
     }
-    if (!datos.poblacion.trim() || isNaN(datos.poblacion) || Number(datos.poblacion) <= 0) {
+    if (
+      !datos.poblacion.trim() ||
+      isNaN(datos.poblacion) ||
+      Number(datos.poblacion) <= 0
+    ) {
       erroresTemp.poblacion = "La población debe ser un número positivo.";
       hayErrores = true;
     }
@@ -66,6 +90,11 @@ function AltaCiudad() {
     }
   };
 
+  /**
+   * @function handleChange
+   * @description Actualiza el estado del formulario cuando cambian los inputs
+   * @param {Event} e - Evento del input
+   */
   const handleChange = (e) => {
     setDatos({
       ...datos,

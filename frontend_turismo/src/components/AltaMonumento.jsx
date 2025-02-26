@@ -1,3 +1,11 @@
+/**
+ * @module AltaMonumento
+ * @description Componente que maneja el formulario de alta de un nuevo monumento
+ * @requires react
+ * @requires @mui/material
+ * @requires react-router-dom
+ */
+
 import { Typography, TextField, Stack, Button } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { useState } from "react";
@@ -5,14 +13,27 @@ import { useNavigate } from "react-router";
 // Importamos las variables de entorno
 import { apiUrl } from "../config";
 
+/**
+ * @function AltaMonumento
+ * @description Renderiza un formulario para crear un nuevo monumento
+ * @returns {JSX.Element} Formulario de alta de monumento
+ */
 function AltaMonumento() {
+  // Estado para los datos del formulario
   const [datos, setDatos] = useState({
     nombre: "",
     ciudad_id: "",
     añoConstruccion: "",
   });
+
   const navigate = useNavigate();
 
+  /**
+   * @function handleSubmit
+   * @description Procesa el envío del formulario y realiza la petición POST
+   * @param {Event} e - Evento del formulario
+   * @async
+   */
   const handleSubmit = async (e) => {
     // No hacemos submit
     e.preventDefault();
@@ -40,6 +61,11 @@ function AltaMonumento() {
     }
   };
 
+  /**
+   * @function handleChange
+   * @description Actualiza el estado cuando cambian los inputs
+   * @param {Event} e - Evento del input
+   */
   const handleChange = (e) => {
     setDatos({
       ...datos,

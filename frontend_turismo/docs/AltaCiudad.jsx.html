@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: AltaCiudad.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: AltaCiudad.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @module AltaCiudad
+ * @description Componente que maneja el formulario de alta de una nueva ciudad
+ * @requires react
+ * @requires @mui/material
+ * @requires react-router-dom
+ */
+import { Typography, TextField, Stack, Button } from "@mui/material";
+import Grid from "@mui/material/Grid2";
+import { useState } from "react";
+import { useNavigate } from "react-router";
+import { apiUrl } from "../config";
+
+/**
+ * @function AltaCiudad
+ * @description Renderiza un formulario para crear una nueva ciudad
+ * @returns {JSX.Element} Formulario de alta de ciudad
+ */
+function AltaCiudad() {
+  // Estado para los datos del formulario
+  const [datos, setDatos] = useState({
+    nombre: "",
+    pais: "",
+    poblacion: "",
+  });
+
+  // Estado para manejar los mensajes de error de validación
+  const [errores, setErrores] = useState({
+    nombre: "",
+    pais: "",
+    poblacion: "",
+  });
+
+  const navigate = useNavigate();
+
+  /**
+   * @function handleSubmit
+   * @description Maneja el envío del formulario, valida los datos y hace la petición POST
+   * @param {Event} e - Evento del formulario
+   * @async
+   */
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // ✅ Validaciones antes de enviar
+    let erroresTemp = { nombre: "", pais: "", poblacion: "" };
+    let hayErrores = false;
+
+    if (!datos.nombre.trim()) {
+      erroresTemp.nombre = "El nombre es obligatorio.";
+      hayErrores = true;
+    }
+    if (!datos.pais.trim()) {
+      erroresTemp.pais = "El país es obligatorio.";
+      hayErrores = true;
+    }
+    if (
+      !datos.poblacion.trim() ||
+      isNaN(datos.poblacion) ||
+      Number(datos.poblacion) &lt;= 0
+    ) {
+      erroresTemp.poblacion = "La población debe ser un número positivo.";
+      hayErrores = true;
+    }
+
+    setErrores(erroresTemp);
+
+    if (hayErrores) return; // Si hay errores, no enviamos los datos
+
+    // Enviamos los datos mediante fetch
+    try {
+      const response = await fetch(apiUrl + "/ciudades", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(datos),
+      });
+
+      if (response.ok) {
+        const respuesta = await response.json();
+        alert(respuesta.mensaje);
+        if (respuesta.ok) {
+          navigate("/"); // Volver a la página principal
+        }
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Error:", error);
+    }
+  };
+
+  /**
+   * @function handleChange
+   * @description Actualiza el estado del formulario cuando cambian los inputs
+   * @param {Event} e - Evento del input
+   */
+  const handleChange = (e) => {
+    setDatos({
+      ...datos,
+      [e.target.name]: e.target.value,
+    });
+
+    // Limpiar error si el usuario comienza a escribir
+    setErrores({
+      ...errores,
+      [e.target.name]: "",
+    });
+  };
+
+  return (
+    &lt;>
+      &lt;Typography variant="h4" align="center" sx={{ mt: 2 }}>
+        Alta Ciudad
+      &lt;/Typography>
+      &lt;Grid
+        container
+        spacing={2}
+        sx={{ mt: 2, justifyContent: "center", alignItems: "center" }}
+      >
+        &lt;Grid size={{ xs: 12, sm: 6, md: 4 }}>
+          &lt;Stack
+            component="form"
+            spacing={2}
+            onSubmit={handleSubmit}
+            sx={{ mx: 2 }}
+          >
+            &lt;TextField
+              label="Nombre"
+              variant="outlined"
+              name="nombre"
+              value={datos.nombre}
+              onChange={handleChange}
+              error={!!errores.nombre}
+              helperText={errores.nombre}
+            />
+            &lt;TextField
+              label="País"
+              variant="outlined"
+              name="pais"
+              value={datos.pais}
+              onChange={handleChange}
+              error={!!errores.pais}
+              helperText={errores.pais}
+            />
+            &lt;TextField
+              label="Población"
+              variant="outlined"
+              name="poblacion"
+              value={datos.poblacion}
+              onChange={handleChange}
+              error={!!errores.poblacion}
+              helperText={errores.poblacion}
+            />
+            &lt;Button variant="contained" type="submit">
+              Guardar
+            &lt;/Button>
+          &lt;/Stack>
+        &lt;/Grid>
+      &lt;/Grid>
+    &lt;/>
+  );
+}
+
+export default AltaCiudad;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-AltaCiudad.html">AltaCiudad</a></li><li><a href="module-AltaMonumento.html">AltaMonumento</a></li><li><a href="module-ListadoCiudades.html">ListadoCiudades</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Wed Feb 26 2025 10:42:24 GMT+0100 (hora estándar de Europa central)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

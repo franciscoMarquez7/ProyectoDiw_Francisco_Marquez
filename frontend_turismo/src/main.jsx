@@ -21,7 +21,6 @@ import ModificarMonumento from "./components/ModificarMonumento";
 import ListadoCiudadesFiltrado from "./components/ListadoCiudadesFiltrado";
 import ListadoMonumentosFiltrado from "./components/ListadoMonumentosFiltrado";
 
-
 let router = createBrowserRouter([
   {
     path: "/",
@@ -65,7 +64,9 @@ let router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById("root")).render(
-  <ThemeProviderComponent>
-    <RouterProvider router={router} />
-  </ThemeProviderComponent>
+  <StrictMode>
+    <ThemeProviderComponent>
+      <RouterProvider router={router} />
+    </ThemeProviderComponent>
+  </StrictMode>
 );
